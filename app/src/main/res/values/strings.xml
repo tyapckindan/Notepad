@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Notepad</string>
+    <string name="input_text">Введите текст:</string>
+    <string name="name">Название заголовка</string>
+    <string name="back">Назад</string>
+    <string name="newBookMark">Новая закладка</string>
+    <string name="btnTextAdd">+</string>
+</resources>
