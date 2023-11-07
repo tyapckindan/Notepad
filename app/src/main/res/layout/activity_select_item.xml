@@ -8,7 +8,7 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/btn"
+        android:id="@+id/btn_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/back"/>
@@ -23,10 +23,28 @@
         android:textColorHint="@color/cardview_dark_background" />
 
     <EditText
-        android:id="@+id/text"
+        android:id="@+id/status"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/input_text"
+        android:hint="@string/input_text_status"
+        android:textColorHint="@color/cardview_dark_background"
+        android:textColor="@color/black"
+        android:gravity="start|top" />
+
+    <EditText
+        android:id="@+id/location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/input_text_location"
+        android:textColorHint="@color/cardview_dark_background"
+        android:textColor="@color/black"
+        android:gravity="start|top" />
+
+    <EditText
+        android:id="@+id/timeExitNet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/input_text_time_exit_network"
         android:textColorHint="@color/cardview_dark_background"
         android:textColor="@color/black"
         android:gravity="start|top" />

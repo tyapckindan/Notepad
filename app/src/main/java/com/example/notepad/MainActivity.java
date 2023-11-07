@@ -3,84 +3,72 @@ package com.example.notepad;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    static String BOOKMARK_KEY = "BOOKMARK"; // Заголовок
-    String name = ""; // Для хранения заголовка
+    final public static String KEY_COMPUTER = "computer";
+    final public static String KEY_POSITION = "position";
+    ListView ComputerListView;
+    DataBaseAccessor db;
+    ArrayList<String> computersList;
+    ArrayAdapter<String> adapter;
 
-    private final String[] Topics = {"Тема 1", "Тема 2", "Тема 3"};
-
-    // Получение данных работы активити
-    ActivityResultLauncher<Intent> mStartForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                TextView textView = findViewById(R.id.text_item);
-                if(result.getResultCode() == Activity.RESULT_OK){
-                    Intent intent = result.getData();
-                    assert intent != null;
-                    String bookmark = intent.getStringExtra("BOOKMARK");
-                    textView.setText(bookmark);
-                    name = bookmark;
+    // создание launcher для получения данных из дочерней активити
+    ActivityResultLauncher<Intent> ComputersLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    // все ли хорошо при получении данных из дочерней активити?
+                    if(result.getResultCode() == Activity.RESULT_OK)
+                    {
+                        //получить данные
+                        Intent returnedIntent = result.getData();
+                        int id = returnedIntent.getIntExtra(KEY_POSITION,-1);
+                        String computer = returnedIntent.getStringExtra(KEY_COMPUTER);
+                    }
+                    else
+                    {
+                        Log.d("MainActivity" ,"Invalid note activity result");
+                    }
                 }
             });
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
-        ListView list = findViewById(R.id.list);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, Topics);
-        list.setAdapter(adapter);// адаптер для ListView
+        ComputerListView = findViewById(R.id.list);
 
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        computersList = new ArrayList<>();
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, computersList); // Адаптер для списка компьютеров
+        ComputerListView.setAdapter(adapter);// адаптер для ListView
+
+        // Обработка нажатия по элементу списка
+        ComputerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String topic = Topics[position];
-                TextView textView = findViewById(R.id.text_item);
-                String bookmark = textView.getText().toString();
 
-                Intent intent = new Intent(MainActivity.this, SelectItemActivity.class);
-                intent.putExtra(BOOKMARK_KEY, bookmark);
-                intent.putExtra("topic", topic);
-
-                mStartForResult.launch(intent);
             }
         });
     }
-
-    // Переход на другую активити, передача заголовка
-    public void TextViewOnClick(View view) {
-
-
-    }
-
-    // Сохраняем заголовок
     @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString("bookmark", name);
-    }
-
-    //Возвращаем заголовок
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        if (savedInstanceState != null &&
-                savedInstanceState.containsKey("bookmark")) {
-            name = savedInstanceState.getString("bookmark");
-            TextView counterView = findViewById(R.id.text_item);
-            counterView.setText(name);
-        }
+    protected void onDestroy() {
+        super.onDestroy();
+        // закрыть БД
+        db.close();
     }
 }

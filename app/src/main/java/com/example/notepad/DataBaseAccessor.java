@@ -14,13 +14,14 @@ import androidx.annotation.Nullable;
         private static final int DB_VERSION = 3;
 
         // таблицы
-        private static final String TABLE_NOTE = "NOTE";
+        private static final String COMPUTER_DATA = "DATA";
 
-
-        // столбцы таблицы Note
+        // столбцы таблицы Data
         private static final String COLUMN_ID = "_id";//Обязательно с подчеркиванием
-        private static final String COLUMN_THEME = "theme";
-        private static final String COLUMN_NOTE = "note";
+        private static final String COLUMN_NAME = "name";
+        private static final String COLUMN_STATUS = "status";
+        private static final String COLUMN_LOCATION = "location";
+        private static final String COLUMN_TIME = "timeExitNet";
 
         public DataBaseAccessor(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
             super(context, name, factory, version);

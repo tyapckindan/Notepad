@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">Notepad</string>
-    <string name="input_text">Введите текст:</string>
-    <string name="name">Название заголовка</string>
+    <string name="input_text_status">Статус:</string>
+    <string name="input_text_location">Местоположение:</string>
+    <string name="input_text_time_exit_network">Время последнего выхода в сеть:</string>
+    <string name="name">Название компьютера</string>
     <string name="back">Назад</string>
     <string name="newBookMark">Новая закладка</string>
     <string name="btnTextAdd">+</string>
